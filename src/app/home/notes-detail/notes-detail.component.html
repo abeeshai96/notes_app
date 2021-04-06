@@ -1,0 +1,29 @@
+<div class="container h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="card" style="width: 30rem">
+      <div class="card-body" style="background-color: #fcfbe0">
+        <div class="project-info-box">
+          <p><b>Title:</b> Test Note Title</p>
+          <p><b>Description:</b> Test Note Description</p>
+          <p><b>Date & Time:</b> 06/04/2021 5PM</p>
+          <p><b>Type:</b> Personal</p>
+          <p><b>Priority:</b> Medium</p>
+          <div class="text-center">
+            <button
+              class="btn btn-warning shadow-none m-1"
+              (click)="onEditNote()"
+            >
+              Edit note
+            </button>
+            <button
+              class="btn btn-danger shadow-none m-1"
+              (click)="onDeleteNote()"
+            >
+              Delete note
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
