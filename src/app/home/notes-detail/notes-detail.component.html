@@ -1,13 +1,13 @@
-<div class="container h-100">
-  <div class="row h-100 justify-content-center align-items-center">
+<div class="container">
+  <div class="row justify-content-center align-items-center">
     <div class="card" style="width: 30rem">
-      <div class="card-body" style="background-color: #fcfbe0">
+      <div class="card-body" style="background-color: #f0eec1">
         <div class="project-info-box">
-          <p><b>Title:</b> Test Note Title</p>
-          <p><b>Description:</b> Test Note Description</p>
-          <p><b>Date & Time:</b> 06/04/2021 5PM</p>
-          <p><b>Type:</b> Personal</p>
-          <p><b>Priority:</b> Medium</p>
+          <p><b>Title:</b> {{ note.title }}</p>
+          <p><b>Description:</b> {{ note.description }}</p>
+          <p><b>Date:</b> {{ note.date | date: "fullDate" }}</p>
+          <p><b>Type:</b> {{ note.type | titlecase }}</p>
+          <p><b>Priority:</b> {{ note.priority | titlecase }}</p>
           <div class="text-center">
             <button
               class="btn btn-warning shadow-none m-1"
