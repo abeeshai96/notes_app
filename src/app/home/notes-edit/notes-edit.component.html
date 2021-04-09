@@ -1,5 +1,8 @@
 <div class="container">
   <div class="row justify-content-center align-items-center">
+    <div class="alert alert-danger" *ngIf="formEditFlag">
+      <h6>No Changes found to save!</h6>
+    </div>
     <form (ngSubmit)="onSubmit()" #f="ngForm">
       <div class="row">
         <div class="col-xs-12 p-1">

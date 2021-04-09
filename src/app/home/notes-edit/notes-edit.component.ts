@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { HomeService } from '../home.service';
@@ -13,8 +14,9 @@ import { Note } from '../note.model';
 })
 export class NotesEditComponent implements OnInit, AfterViewInit {
   id: number;
-  editMode = false;
   note: Note;
+  editMode = false;
+  formEditFlag = false;
 
   @ViewChild('f', { static: false }) notesForm: NgForm;
   defaultType = 'personal';
@@ -26,6 +28,7 @@ export class NotesEditComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
     private homeService: HomeService,
     private dataStorageService: DataStorageService
   ) {}
@@ -34,6 +37,7 @@ export class NotesEditComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
       this.editMode = params['id'] != null;
+      this.note = this.homeService.getNote(this.id);
     });
   }
 
@@ -53,12 +57,21 @@ export class NotesEditComponent implements OnInit, AfterViewInit {
     );
 
     if (this.editMode) {
-      this.homeService.updateNote(this.id, newNote);
+      if (this.formChanged()) {
+        this.formEditFlag = false;
+        this.homeService.updateNote(this.id, newNote);
+        this.toastr.info('Updated the note successfully!');
+        this.dataStorageService.storeNotes();
+        this.onCancel();
+      } else {
+        this.formEditFlag = true;
+      }
     } else {
       this.homeService.addNote(newNote);
+      this.toastr.success('Added the note successfully!');
+      this.dataStorageService.storeNotes();
+      this.onCancel();
     }
-    this.dataStorageService.storeNotes();
-    this.onCancel();
   }
 
   onCancel() {
@@ -68,7 +81,6 @@ export class NotesEditComponent implements OnInit, AfterViewInit {
 
   initForm() {
     if (this.editMode) {
-      this.note = this.homeService.getNote(this.id);
       setTimeout(() => {
         this.notesForm.setValue({
           title: this.note.title,
@@ -78,6 +90,20 @@ export class NotesEditComponent implements OnInit, AfterViewInit {
           priority: this.note.priority,
         });
       });
+    }
+  }
+
+  formChanged() {
+    if (
+      this.note.title === this.notesForm.form.value.title &&
+      this.note.description === this.notesForm.form.value.description &&
+      this.note.date === this.notesForm.form.value.date &&
+      this.note.type === this.notesForm.form.value.type &&
+      this.note.priority === this.notesForm.form.value.priority
+    ) {
+      return false;
+    } else {
+      return true;
     }
   }
 }
