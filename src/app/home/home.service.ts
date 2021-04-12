@@ -13,8 +13,12 @@ export class HomeService {
   constructor() {}
 
   setNotes(notes: Note[]) {
-    this.notes = notes;
+    this.notes = notes.filter(this.notEmpty);
     this.notesChanged.next(this.notes.slice());
+  }
+
+  notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+    return value !== null && value !== undefined;
   }
 
   getNotes() {

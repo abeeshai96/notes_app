@@ -47,5 +47,6 @@ export class NotesDetailComponent implements OnInit {
     this.dataStorageService.deleteNote(this.id);
     this.toastr.error('Deleted the note successfully!');
     this.router.navigate(['/notes']);
+    this.dataStorageService.storeNotes(); // To re-structure array index
   }
 }
